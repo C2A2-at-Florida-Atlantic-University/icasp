@@ -1,4 +1,7 @@
-%clear all ; clc ; close all ; 
+clear all; clc; close all; 
+
+PATH_SOURCE = '../../../../data/';
+
 step = 1;
 clients = 1:8;
 ref = 1:8;
@@ -16,9 +19,11 @@ client_svd_error = [];
 
 %for every client 
 for c = clients 
+    fprintf(strcat('\n\nClient', int2str(c)));
     
     %load the workspace 
-    work_space_client = 'client_x'+string(c)+'_for_az.mat'; 
+    work_space_client = strcat(PATH_SOURCE, 'client_x' + string(c) + '_for_az.mat'); 
+    % work_space_client = strcat('client_x' + string(c) + '_for_az.mat'); 
     true_aoa_client = double(load(work_space_client).('output_az')); %convert single to double 
     
     client_frame_l1_error = []; 
@@ -26,12 +31,15 @@ for c = clients
     
     %for every frame  
     for f = 1:19
+        fprintf(strcat('\nFrame', int2str(f), ':'));
         
         client_sample_l1_error = []; 
         client_sample_svd_error = [];
         
         %for every snapshot/sample 
         for s = 1:128
+            fprintf('.');
+
             frame_name = 'output_samples_frame_'+string(f); 
             data_tensor = load(work_space_client).(frame_name); %data matrix is a tensor (rows, cols, frame)
             data_matrix = data_tensor(:,:,s); 
@@ -69,9 +77,10 @@ ref_svd_error = [];
 
 %for every reference 
 for r = ref 
+    fprintf(strcat('\n\nReference', int2str(r)));
     
     %load the workspace 
-    work_space_ref = 'reference_x'+string(r)+'_for_az.mat'; 
+    work_space_ref = strcat(PATH_SOURCE, 'reference_x' + string(r) + '_for_az.mat'); 
     true_aoa_ref = double(load(work_space_ref).('output_az')); %convert single to double 
     
     ref_frame_l1_error = []; 
@@ -79,12 +88,15 @@ for r = ref
     
     %for every frame  
     for f = 1:19
+        fprintf(strcat('\nFrame', int2str(f), ':'));
         
         ref_sample_l1_error = []; 
         ref_sample_svd_error = [];
         
         %for every snapshot/sample 
         for s = 1:128
+            fprintf('.');
+
             frame_name = 'output_samples_frame_'+string(f); 
             data_tensor = load(work_space_ref).(frame_name); %data matrix is a tensor (rows, cols, frame)
             data_matrix = data_tensor(:,:,s); 

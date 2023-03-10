@@ -1,4 +1,7 @@
-%clear all ; clc ; close all ; 
+clear all ; clc ; close all ; 
+
+addpath('../utilities');
+
 step = 1;
 clients = 1:8;
 ref = 1:8; 
@@ -16,6 +19,7 @@ client_svd_error = [];
 
 %for every client 
 for c = clients 
+    fprintf(strcat('\n\nClient: ', int2str(c), "\n"));
     
     %load the workspace 
     work_space_client = 'client_x'+string(c)+'_for_elev.mat'; 
@@ -26,12 +30,14 @@ for c = clients
     
     %for every frame  
     for f = 1:19
+        fprintf(strcat('\nFrame: ', int2str(f)));
         
         client_sample_l1_error = []; 
         client_sample_svd_error = [];
         
         %for every snapshot/sample 
         for s = 1:128
+            fprintf('.');
             frame_name = 'output_samples_frame_'+string(f); 
             data_tensor = load(work_space_client).(frame_name); %data matrix is a tensor (rows, cols, frame)
             data_matrix = data_tensor(:,:,s); 
@@ -68,6 +74,7 @@ ref_svd_error = [];
 
 %for every reference 
 for r = ref 
+    fprintf(strcat('\n\n\Reference ', int2str(c), "\n"));
     
     %load the workspace 
     work_space_ref = 'reference_x'+string(r)+'_for_elev.mat'; 
@@ -78,12 +85,14 @@ for r = ref
     
     %for every frame  
     for f = 1:19
+        fprintf(strcat('\nFrame: ', int2str(f)));
         
         ref_sample_l1_error = []; 
         ref_sample_svd_error = [];
         
         %for every snapshot/sample 
         for s = 1:128
+            fprintf('.');
             frame_name = 'output_samples_frame_'+string(f); 
             data_tensor = load(work_space_ref).(frame_name); %data matrix is a tensor (rows, cols, frame)
             data_matrix = data_tensor(:,:,s); 

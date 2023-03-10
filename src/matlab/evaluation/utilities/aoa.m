@@ -1,4 +1,4 @@
-function [angle,max_magnitude,magnitudes] = aoa_v2(space_series,num_antennas,step)
+function [angle,max_magnitude,magnitudes] = aoa(space_series,num_antennas,step)
 %finds the angle of arrival; that is the max(abs(x'*a(theta)))
 
 %input: 
