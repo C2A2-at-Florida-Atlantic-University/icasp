@@ -1,8 +1,8 @@
 clear all; clc; close all; 
 
-addpath('../utilities/');
+addpath('./utilities/');
 
-PATH_SOURCE = '../../../../data/';
+PATH_SOURCE = '../../../data/';
 
 rand_seed = 100;
 
@@ -17,12 +17,12 @@ SNR = 1; % SNR(dB)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-doa_threshold = 10;
+doa_threshold = 5;
 
 % full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, 6, 20, SNR, rand_seed, doa_threshold);
-full_test_sim_az(doa_true_angles_az, d_row, T, lambda, 4, 20, SNR, rand_seed, doa_threshold);
+% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, 4, 20, SNR, rand_seed, doa_threshold);
 
-% full_test_real_elev(PATH_SOURCE, lambda, 6, 19, doa_threshold);
+full_test_real_elev(PATH_SOURCE, lambda, 6, 19, doa_threshold);
 % full_test_real_az(PATH_SOURCE, lambda, 4, 19, doa_threshold);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
