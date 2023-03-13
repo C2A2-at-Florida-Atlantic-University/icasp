@@ -16,7 +16,11 @@ classdef music
             Pmusic = real(10*log10(Pmusic)); % spatial spectrum function
             [~, locs] = findpeaks(Pmusic, theta, 'SortStr', 'descend', 'Annotate', 'extents');
 
-            result_doa = locs(1);
+            if isempty(locs)
+                result_doa = NaN;
+            else
+                result_doa = locs(1);
+            end
         end
     end
 end
