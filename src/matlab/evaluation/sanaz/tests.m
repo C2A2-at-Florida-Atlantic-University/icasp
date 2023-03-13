@@ -19,8 +19,8 @@ SNR = 1; % SNR(dB)
 
 doa_threshold = 10;
 
-full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, 6, 20, SNR, rand_seed, doa_threshold);
-% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, 4, 20, SNR, rand_seed, doa_threshold);
+% full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, 6, 20, SNR, rand_seed, doa_threshold);
+full_test_sim_az(doa_true_angles_az, d_row, T, lambda, 4, 20, SNR, rand_seed, doa_threshold);
 
 % full_test_real_elev(PATH_SOURCE, lambda, 6, 19, doa_threshold);
 % full_test_real_az(PATH_SOURCE, lambda, 4, 19, doa_threshold);
@@ -32,18 +32,24 @@ function [] = full_test_real_elev(path_source, lambda, Nr, N, doa_threshold)
     [doa_true_angles_elev, real_signal_elev] = read_real_data_elev(path_source);
     
     % 2. Filter samples in each client & frame which are below given DoA threshold
-    % Create array of cells of a size (M x N), where M - # of clients, N - # of frames
-    test_signal_sim_elev_filtered = filter_signal(real_signal_elev, doa_true_angles_elev, Nr, doa_threshold);
+    signal_real_elev_filtered = filter_signal(real_signal_elev, doa_true_angles_elev, Nr, doa_threshold);
     
-    % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
-    doa_rmse_hankel_elev = evaluate_hankel(doa_true_angles_elev, test_signal_sim_elev_filtered, Nr, N);
-    doa_rmse_music_elev = evalute_music(doa_true_angles_elev, test_signal_sim_elev_filtered, lambda, Nr);
+    % 3. Run Hankel vs. MUSIC evaluation on filtered dataset
+    rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, signal_real_elev_filtered, Nr, N);
+    rmse_music_elev_filtered = evaluate_music(doa_true_angles_elev, signal_real_elev_filtered, lambda, Nr);
+
+    % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
+    signal_real_elev_full = convert_signal_to_cell(real_signal_elev);
+    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_real_elev_full, Nr, N);
+    rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_real_elev_full, lambda, Nr);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, doa_rmse_hankel_elev, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD');
-    plot(1:9, doa_rmse_music_elev, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
+    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
+    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
+    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
     hold off;
     grid on; 
     xlabel('Client');
@@ -52,24 +58,29 @@ function [] = full_test_real_elev(path_source, lambda, Nr, N, doa_threshold)
     title("Hankel vs. MUSIC. Elevation. Real Data.");
 end
 
-
 function [] = full_test_real_az(path_source, lambda, Nr, N, doa_threshold)
     % 1. Read measurements
     [doa_true_angles_az, real_signal_az] = read_real_data_az(path_source);
     
     % 2. Filter samples in each client & frame which are below given DoA threshold
-    % Create array of cells of a size (M x N), where M - # of clients, N - # of frames
     test_signal_sim_az_filtered = filter_signal(real_signal_az, doa_true_angles_az, Nr, doa_threshold);
     
     % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
-    doa_rmse_hankel_az = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N);
-    doa_rmse_music_az = evalute_music(doa_true_angles_az, test_signal_sim_az_filtered, lambda, Nr);
+    rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N);
+    rmse_music_az_filtered = evaluate_music(doa_true_angles_az, test_signal_sim_az_filtered, lambda, Nr);
+
+    % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
+    signal_real_az_full = convert_signal_to_cell(real_signal_az);
+    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_real_az_full, Nr, N);
+    rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_real_az_full, lambda, Nr);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, doa_rmse_hankel_az, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD');
-    plot(1:9, doa_rmse_music_az, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
+    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
+    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
+    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
     hold off;
     grid on; 
     xlabel('Client');
@@ -80,21 +91,28 @@ end
 
 function [] = full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, Nr, N, SNR, rand_seed, doa_threshold)
     % 1. Generate simulated measurements
-    test_signal_sim_elev = simulate_data(doa_true_angles_elev, T, lambda, d_col, Nr, SNR, N, rand_seed);
+    sim_signal_elev = simulate_data(doa_true_angles_elev, T, lambda, d_col, Nr, SNR, N, rand_seed);
     
     % 2. Filter samples in each client & frame which are below given DoA threshold
     % Create array of cells of a size (M x N), where M - # of clients, N - # of frames
-    test_signal_sim_elev_filtered = filter_signal(test_signal_sim_elev, doa_true_angles_elev, Nr, doa_threshold);
+    test_signal_sim_elev_filtered = filter_signal(sim_signal_elev, doa_true_angles_elev, Nr, doa_threshold);
     
     % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
-    doa_rmse_hankel_elev = evaluate_hankel(doa_true_angles_elev, test_signal_sim_elev_filtered, Nr, N);
-    doa_rmse_music_elev = evalute_music(doa_true_angles_elev, test_signal_sim_elev_filtered, lambda, Nr);
+    rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, test_signal_sim_elev_filtered, Nr, N);
+    rmse_music_elev_filtered = evaluate_music(doa_true_angles_elev, test_signal_sim_elev_filtered, lambda, Nr);
+
+    % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
+    signal_sim_elev_full = convert_signal_to_cell(sim_signal_elev);
+    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_sim_elev_full, Nr, N);
+    rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_sim_elev_full, lambda, Nr);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, doa_rmse_hankel_elev, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD');
-    plot(1:9, doa_rmse_music_elev, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
+    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
+    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
+    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
     hold off;
     grid on; 
     xlabel('Client');
@@ -105,21 +123,28 @@ end
 
 function [] = full_test_sim_az(doa_true_angles_az, d_row, T, lambda, Nr, N, SNR, rand_seed, doa_threshold)
     % 1. Generate simulated measurements
-    test_signal_sim_az = simulate_data(doa_true_angles_az, T, lambda, d_row, Nr, SNR, N, rand_seed);
+    sim_signal_az = simulate_data(doa_true_angles_az, T, lambda, d_row, Nr, SNR, N, rand_seed);
     
     % 2. Filter samples in each client & frame which are below given DoA threshold
     % Create array of cells of a size (M x N), where M - # of clients, N - # of frames
-    test_signal_sim_az_filtered = filter_signal(test_signal_sim_az, doa_true_angles_az, Nr, doa_threshold);
+    test_signal_sim_az_filtered = filter_signal(sim_signal_az, doa_true_angles_az, Nr, doa_threshold);
     
     % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
-    doa_rmse_hankel_az = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N);
-    doa_rmse_music_az = evalute_music(doa_true_angles_az, test_signal_sim_az_filtered, lambda, Nr);
+    rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N);
+    rmse_music_az_filtered = evaluate_music(doa_true_angles_az, test_signal_sim_az_filtered, lambda, Nr);
+
+    % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
+    signal_sim_az_full = convert_signal_to_cell(sim_signal_az);
+    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_sim_az_full, Nr, N);
+    rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_sim_az_full, lambda, Nr);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, doa_rmse_hankel_az, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD');
-    plot(1:9, doa_rmse_music_az, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
+    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
+    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
+    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
     hold off;
     grid on; 
     xlabel('Client');
@@ -143,6 +168,15 @@ function [signal_filtered] = filter_signal(signal, true_doa, Nr, doa_threshold)
     
             % Extract "good" samples from the dataset & save filtered samples into the cell array
             signal_filtered(client_idx, frame_idx) = {client_samples(:, frame_good_samples)};
+        end
+    end
+end
+
+function [signal_full] = convert_signal_to_cell(signal)
+    signal_full = cell(size(signal, 3), size(signal, 4));
+    for client_idx = 1:size(signal_full, 1)
+        for frame_idx = 1:size(signal_full, 2)
+            signal_full(client_idx, frame_idx) = {squeeze(signal(:, :, client_idx, frame_idx))};
         end
     end
 end
@@ -316,7 +350,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%% RUNNING THE METHODS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [doa_rmse] = evalute_music(doa_true_angles, test_signal_sim, lambda, Nr)
+function [doa_rmse] = evaluate_music(doa_true_angles, test_signal_sim, lambda, Nr)
     doa_rmse = zeros(size(test_signal_sim, 1), 1);
     for doa_idx = 1:length(doa_true_angles)
 
