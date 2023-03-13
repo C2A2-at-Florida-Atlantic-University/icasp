@@ -164,7 +164,7 @@ def prepare_iq_samples(pilots, frame_start, frame_count, samps_per_slot):
         Q = pilots[frame_idx, 0, 1, :, 1:samps_per_slot * 2:2] / 2 ** 15
         IQ = I + (Q * 1j)
 
-        matlab_package['reference_frame_' + str(frame_idx)] = IQ
+        matlab_package['reference_frame_' + str(frame_idx+1)] = IQ
 
     # Store samples from client emitter
     for frame_idx in range(frame_start, frame_start + frame_count):
@@ -172,7 +172,7 @@ def prepare_iq_samples(pilots, frame_start, frame_count, samps_per_slot):
         Q = pilots[frame_idx, 0, 0, :, 1:samps_per_slot * 2:2] / 2 ** 15
         IQ = I + (Q * 1j)
 
-        matlab_package['client_frame_' + str(frame_idx)] = IQ
+        matlab_package['client_frame_' + str(frame_idx+1)] = IQ
 
     return matlab_package
 

@@ -14,16 +14,17 @@ lambda = 0.0844486; % wavelength (meters)
 d_row = 0.07935; % antenna spacing within a row (meters)
 d_col = 0.06668; % antenna spacing within a column (meters)
 SNR = 1; % SNR(dB)
+N = 20; % number of frames
+ant_rows = 4; % number of antennas in MIMO row
+ant_cols = 6; % number of antennas in MIMO column
+doa_threshold = 10; % threshold in degrees we use to pick samples
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-doa_threshold = 5;
-
-% full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, 6, 20, SNR, rand_seed, doa_threshold);
-% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, 4, 20, SNR, rand_seed, doa_threshold);
-
-full_test_real_elev(PATH_SOURCE, lambda, 6, 19, doa_threshold);
-% full_test_real_az(PATH_SOURCE, lambda, 4, 19, doa_threshold);
+% full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
+% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
+full_test_real_elev(PATH_SOURCE, lambda, ant_cols, N, doa_threshold);
+% full_test_real_az(PATH_SOURCE, lambda, ant_rows, N, doa_threshold);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,10 +47,10 @@ function [] = full_test_real_elev(path_source, lambda, Nr, N, doa_threshold)
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
-    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
-    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
-    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
+    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
+    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
     grid on; 
     xlabel('Client');
@@ -77,10 +78,10 @@ function [] = full_test_real_az(path_source, lambda, Nr, N, doa_threshold)
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
-    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
-    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
-    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
+    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
+    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
     grid on; 
     xlabel('Client');
@@ -109,10 +110,10 @@ function [] = full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, Nr, N, 
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
-    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
-    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
-    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
+    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
+    plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
     grid on; 
     xlabel('Client');
@@ -141,10 +142,10 @@ function [] = full_test_sim_az(doa_true_angles_az, d_row, T, lambda, Nr, N, SNR,
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD Filtered');
-    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC Filtered');
-    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD Full');
-    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC Full');
+    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
+    plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
     grid on; 
     xlabel('Client');
@@ -217,8 +218,8 @@ function [test_signal_sim] = simulate_data(doa_true_angles, T, lambda, d_x, Nr, 
 end
 
 function [doa_true_angles_az, real_signal_az] = read_real_data_az(path_source)
-    real_signal_client = zeros(4, 128, 8, 19);
-    real_signal_reference = zeros(4, 128, 1, 19);
+    real_signal_client = zeros(4, 128, 8, 20);
+    real_signal_reference = zeros(4, 128, 1, 20);
     true_doa_client = zeros(8, 1);
     true_doa_reference = zeros(1, 1);
     for client_idx = 1:size(real_signal_client, 3)
@@ -277,14 +278,14 @@ function [doa_true_angles_az, real_signal_az] = read_real_data_az(path_source)
     doa_true_angles_az(1:8, 1) = true_doa_client;
     doa_true_angles_az(9, 1) = true_doa_reference;
 
-    real_signal_az = zeros(4, 128, 9, 19);
+    real_signal_az = zeros(4, 128, 9, 20);
     real_signal_az(:, :, 1:8, :) = real_signal_client;
     real_signal_az(:, :, 9, :) = real_signal_reference;
 end
 
 function [doa_true_angles_elev, real_signal_elev] = read_real_data_elev(path_source)
-    real_signal_client = zeros(6, 128, 8, 19);
-    real_signal_reference = zeros(6, 128, 1, 19);
+    real_signal_client = zeros(6, 128, 8, 20);
+    real_signal_reference = zeros(6, 128, 1, 20);
     true_doa_client = zeros(8, 1);
     true_doa_reference = zeros(1, 1);
     for client_idx = 1:size(real_signal_client, 3)
@@ -343,7 +344,7 @@ function [doa_true_angles_elev, real_signal_elev] = read_real_data_elev(path_sou
     doa_true_angles_elev(1:8, 1) = true_doa_client;
     doa_true_angles_elev(9, 1) = true_doa_reference;
 
-    real_signal_elev = zeros(6, 128, 9, 19);
+    real_signal_elev = zeros(6, 128, 9, 20);
     real_signal_elev(:, :, 1:8, :) = real_signal_client;
     real_signal_elev(:, :, 9, :) = real_signal_reference;
 end
