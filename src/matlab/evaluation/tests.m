@@ -17,14 +17,14 @@ SNR = 1; % SNR(dB)
 N = 19; % number of frames
 ant_rows = 4; % number of antennas in MIMO row
 ant_cols = 6; % number of antennas in MIMO column
-doa_threshold = 12; % threshold in degrees we use to pick samples
+doa_threshold = 15; % threshold in degrees we use to pick samples
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+full_test_real_elev(PATH_SOURCE, d_col, lambda, ant_cols, N, doa_threshold);
+full_test_real_az(PATH_SOURCE, d_row, lambda, ant_rows, N, doa_threshold);
 full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
-% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
-% full_test_real_elev(PATH_SOURCE, d_col, lambda, ant_cols, N, doa_threshold);
-% full_test_real_az(PATH_SOURCE, d_row, lambda, ant_rows, N, doa_threshold);
+full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
