@@ -13,7 +13,7 @@ FRAME_LEN = 2048; % defines how many IQ samples are there in each frame
 LTS_LEN = 64; % defines how many IQ samples are there in each LTS symbol
 ANT_ROWS = [9, 11, 13, 15; 17, 19, 21, 23; 1, 3, 5, 7; 41, 43, 45, 47; 25, 27, 29, 31; 33, 35, 37, 39]; % 2D array defining physical indexing of antennas
 MIMO_DATASETS = ["run1x1", "run2x1", "run3x1", "run4x1", "run5x1", "run6x1", "run7x1", "run8x1"];
-FRAME_COUNT = 20;
+FRAME_COUNT = 19;
 LTS_COUNT = 2;
 
 PATH_SOURCE = '../../../data/';
@@ -48,7 +48,7 @@ function [] = generate_data_client(dataset_name, client_idx, path_source, path_t
     
                 % Determine indexes where first LTS'es begin
                 client_lts_positions = getfield(mimo_run_data, 'client_lts_positions');
-                client_lts_indexes = client_lts_positions(frame_idx, ant_row_idx) + 1;
+                client_lts_indexes = client_lts_positions(frame_idx+1, ant_row_idx) + 1;
         
                 % Extract samples for each of the antennas we need
                 client_ant1 = client_frame(ant_row_idx(1), :)';
@@ -124,7 +124,7 @@ function [] = generate_data_reference(dataset_name, client_idx, path_source, pat
                 ant_row_idx = ant_rows(row_idx, :) + 1;
             
                 % Prepare indexes of LTS1 for each antenna in the row (w/ 1-based indexing)
-                lts_indexes = reference_lts_positions(frame_idx, ant_row_idx) + 1;
+                lts_indexes = reference_lts_positions(frame_idx+1, ant_row_idx) + 1;
             
                 % Extract samples for each of the antennas we need
                 ant1 = frame(ant_row_idx(1), :)';

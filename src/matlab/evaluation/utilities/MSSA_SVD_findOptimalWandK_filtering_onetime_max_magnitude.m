@@ -1,4 +1,4 @@
-function [final_aoa,final_series,final_max_magnitude,windowWithMinMSE,optimalKforWindow] = MSSA_SVD_findOptimalWandK_filtering_onetime_max_magnitude(noisy_series,num_antennas,true_aoa,wLower,wUpper,hankMode,orientation,step)
+function [final_aoa,final_series,final_max_magnitude,windowWithMinMSE,optimalKforWindow] = MSSA_SVD_findOptimalWandK_filtering_onetime_max_magnitude(noisy_series,num_antennas,true_aoa,wLower,wUpper,hankMode,orientation,step,d, lambda)
 
 %from w and k that make theta^ = theta find and return the seq. produced by
 %w and k that max the magnitude. 
@@ -51,7 +51,7 @@ for window = wLower : wUpper
         denoised_series = complex(denoised_series(:,1),denoised_series(:,2));
         
         %calculate the angle of arrival based on the filtered series 
-        [estimated_aoa, magnitude] = aoa(denoised_series,num_antennas,step);
+        [estimated_aoa, magnitude] = aoa(denoised_series,num_antennas,step, d, lambda);
         
         %for every rank of a window store the squared error, the
         %filtered series, the aoa, and the magnitude

@@ -1,6 +1,6 @@
 classdef music
     methods (Static)
-        function [result_doa] = run_music(X, K, lambda, Nr)
+        function [result_doa] = run_music(X, K, lambda, Nr, d)
             T = size(X, 2);
 
             Rx = 1 / T * (X * X');
@@ -10,7 +10,10 @@ classdef music
             theta = -90:1:90;              
             for i=1:length(theta) 
                 SS = zeros(Nr,1); 
-                SS = exp(-1j*2*pi*(lambda/2)*(0:Nr-1)'*sind(theta(i))/lambda);
+                % SS = exp(-1j*2*pi*(lambda/2)*(0:Nr-1)'*sind(theta(i))/lambda);
+
+                SS = exp(-1j*2*pi*(d)*(0:Nr-1)'*sind(theta(i))/lambda);
+
                 Pmusic(i) = 1/(SS'*(Vn*Vn')*SS); 
             end
             Pmusic = real(10*log10(Pmusic)); % spatial spectrum function
