@@ -14,7 +14,7 @@ lambda = 0.0844486; % wavelength (meters)
 d_row = 0.07935; % antenna spacing within a row (meters)
 d_col = 0.06668; % antenna spacing within a column (meters)
 SNR = 1; % SNR(dB)
-N = 19; % number of frames
+N = 20; % number of frames
 ant_rows = 4; % number of antennas in MIMO row
 ant_cols = 6; % number of antennas in MIMO column
 doa_threshold = 15; % threshold in degrees we use to pick samples
@@ -23,8 +23,8 @@ doa_threshold = 15; % threshold in degrees we use to pick samples
 
 full_test_real_elev(PATH_SOURCE, d_col, lambda, ant_cols, N, doa_threshold);
 full_test_real_az(PATH_SOURCE, d_row, lambda, ant_rows, N, doa_threshold);
-full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
-full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
+% full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
+% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -40,15 +40,15 @@ function [] = full_test_real_elev(path_source, d_col, lambda, Nr, N, doa_thresho
     rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, signal_real_elev_filtered, Nr, N, 5, d_col, lambda);
 
     % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
-    signal_real_elev_full = convert_signal_to_cell(real_signal_elev);
-    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_real_elev_full, Nr, N, 5, d_col, lambda);
-    rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_real_elev_full, lambda, Nr, d_col);
+    % signal_real_elev_full = convert_signal_to_cell(real_signal_elev);
+    % rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_real_elev_full, Nr, N, 5, d_col, lambda);
+    % rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_real_elev_full, lambda, Nr, d_col);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
-    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    % plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    % plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
     plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
     plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
@@ -71,15 +71,15 @@ function [] = full_test_real_az(path_source, d_row, lambda, Nr, N, doa_threshold
     rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N, 3, d_row, lambda);
 
     % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
-    signal_real_az_full = convert_signal_to_cell(real_signal_az);
-    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_real_az_full, Nr, N, 3, d_row, lambda);
-    rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_real_az_full, lambda, Nr, d_row);
+    % signal_real_az_full = convert_signal_to_cell(real_signal_az);
+    % rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_real_az_full, Nr, N, 3, d_row, lambda);
+    % rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_real_az_full, lambda, Nr, d_row);
     
     % Plot Hankel performance
     figure
     hold on;
-    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
-    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    % plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    % plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
     plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
     plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
@@ -99,11 +99,11 @@ function [] = full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, Nr, N, 
     
     % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
     rmse_music_elev_filtered = evaluate_music(doa_true_angles_elev, test_signal_sim_elev_filtered, lambda, Nr, d_col);
-    rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, test_signal_sim_elev_filtered, Nr, N, 5, d_col, lambda);
+    rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, test_signal_sim_elev_filtered, Nr, 20, 5, d_col, lambda);
 
     % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
     signal_sim_elev_full = convert_signal_to_cell(sim_signal_elev);
-    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_sim_elev_full, Nr, N, 5, d_col, lambda);
+    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_sim_elev_full, Nr, 20, 5, d_col, lambda);
     rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_sim_elev_full, lambda, Nr, d_col);
     
     % Plot Hankel performance
@@ -130,11 +130,11 @@ function [] = full_test_sim_az(doa_true_angles_az, d_row, T, lambda, Nr, N, SNR,
     
     % 3. Run Hanke vs. MUSIC evaluation on filtered dataset
     rmse_music_az_filtered = evaluate_music(doa_true_angles_az, test_signal_sim_az_filtered, lambda, Nr, d_row);
-    rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N, 3, d_row, lambda);
+    rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, 20, 3, d_row, lambda);
 
     % % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
     signal_sim_az_full = convert_signal_to_cell(sim_signal_az);
-    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_sim_az_full, Nr, N, 3, d_row, lambda);
+    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_sim_az_full, Nr, 20, 3, d_row, lambda);
     rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_sim_az_full, lambda, Nr, d_row);
     
     % Plot Hankel performance
@@ -216,8 +216,8 @@ function [test_signal_sim] = simulate_data(doa_true_angles, T, lambda, d_x, Nr, 
 end
 
 function [doa_true_angles_az, real_signal_az] = read_real_data_az(path_source)
-    real_signal_client = zeros(4, 128, 8, 19);
-    real_signal_reference = zeros(4, 128, 1, 19);
+    real_signal_client = zeros(4, 128, 8, 20);
+    real_signal_reference = zeros(4, 128, 1, 20);
     true_doa_client = zeros(8, 1);
     true_doa_reference = zeros(1, 1);
     for client_idx = 1:size(real_signal_client, 3)
@@ -276,14 +276,14 @@ function [doa_true_angles_az, real_signal_az] = read_real_data_az(path_source)
     doa_true_angles_az(1:8, 1) = true_doa_client;
     doa_true_angles_az(9, 1) = true_doa_reference;
 
-    real_signal_az = zeros(4, 128, 9, 19);
+    real_signal_az = zeros(4, 128, 9, 20);
     real_signal_az(:, :, 1:8, :) = real_signal_client;
     real_signal_az(:, :, 9, :) = real_signal_reference;
 end
 
 function [doa_true_angles_elev, real_signal_elev] = read_real_data_elev(path_source)
-    real_signal_client = zeros(6, 128, 8, 19);
-    real_signal_reference = zeros(6, 128, 1, 19);
+    real_signal_client = zeros(6, 128, 8, 20);
+    real_signal_reference = zeros(6, 128, 1, 20);
     true_doa_client = zeros(8, 1);
     true_doa_reference = zeros(1, 1);
     for client_idx = 1:size(real_signal_client, 3)
@@ -342,21 +342,18 @@ function [doa_true_angles_elev, real_signal_elev] = read_real_data_elev(path_sou
     doa_true_angles_elev(1:8, 1) = true_doa_client;
     doa_true_angles_elev(9, 1) = true_doa_reference;
 
-    real_signal_elev = zeros(6, 128, 9, 19);
+    real_signal_elev = zeros(6, 128, 9, 20);
     real_signal_elev(:, :, 1:8, :) = real_signal_client;
     real_signal_elev(:, :, 9, :) = real_signal_reference;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%% RUNNING THE METHODS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [doa_rmse, music_errors] = evaluate_music(doa_true_angles, test_signal_sim, lambda, Nr, d)
+function [doa_rmse] = evaluate_music(doa_true_angles, test_signal_sim, lambda, Nr, d)
     doa_rmse = zeros(size(test_signal_sim, 1), 1);
-    music_errors = zeros(19, 8);
     for doa_idx = 1:length(doa_true_angles)
 
         true_doa = doa_true_angles(doa_idx);
-
-        frame_errors_out = zeros(19, 1);
 
         frame_errors = zeros(size(test_signal_sim, 2), 1);
         for frame_idx = 1:size(test_signal_sim, 2)
@@ -365,15 +362,11 @@ function [doa_rmse, music_errors] = evaluate_music(doa_true_angles, test_signal_
             doa_estimated = music.run_music(X, 1, lambda, Nr, d);
             if isnan(doa_estimated)
                 frame_errors(frame_idx, 1) = NaN;
-                frame_errors_out(frame_idx) = NaN;
             else
                 frame_errors(frame_idx, 1) = (doa_estimated - true_doa)^2;
-                frame_errors_out(frame_idx) = abs(doa_estimated - true_doa);
             end
         end
         doa_rmse(doa_idx, 1) = sqrt(mean(frame_errors, 'omitnan'));
-
-        music_errors(:, doa_idx) = frame_errors_out;
     end
 end
 

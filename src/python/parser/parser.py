@@ -41,8 +41,7 @@ import scipy.io
 EMITTER_IDX_REFERENCE = 1
 EMITTER_IDX_CLIENT = 0
 
-# DIR = '/Users/stepanmazokha/Documents/Mobintel/datasets/POWDER/aoa_powder_chamber'
-DIR_SOURCE = '/Volumes/Disk/mMIMO'
+DIR_SOURCE = '/Volumes/CradleSSD/mMIMO'
 DIR_TARGET = '../../../data'
 
 FRAME_START_IDX = 100
@@ -159,7 +158,7 @@ def prepare_iq_samples(pilots, frame_start, frame_count, samps_per_slot):
     matlab_package = {}
 
     # Store samples from reference emitter
-    for frame_idx in range(frame_start, frame_start + frame_count):
+    for frame_idx in range(frame_start, frame_start + frame_count + 1):
         I = pilots[frame_idx, 0, 1, :, 0:samps_per_slot * 2:2] / 2 ** 15
         Q = pilots[frame_idx, 0, 1, :, 1:samps_per_slot * 2:2] / 2 ** 15
         IQ = I + (Q * 1j)
@@ -167,7 +166,7 @@ def prepare_iq_samples(pilots, frame_start, frame_count, samps_per_slot):
         matlab_package['reference_frame_' + str(frame_idx+1)] = IQ
 
     # Store samples from client emitter
-    for frame_idx in range(frame_start, frame_start + frame_count):
+    for frame_idx in range(frame_start, frame_start + frame_count + 1):
         I = pilots[frame_idx, 0, 0, :, 0:samps_per_slot * 2:2] / 2 ** 15
         Q = pilots[frame_idx, 0, 0, :, 1:samps_per_slot * 2:2] / 2 ** 15
         IQ = I + (Q * 1j)
