@@ -23,8 +23,8 @@ doa_threshold = 15; % threshold in degrees we use to pick samples
 
 full_test_real_elev(PATH_SOURCE, d_col, lambda, ant_cols, N, doa_threshold);
 full_test_real_az(PATH_SOURCE, d_row, lambda, ant_rows, N, doa_threshold);
-% full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
-% full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
+full_test_sim_elev(doa_true_angles_elev, d_col, T, lambda, ant_cols, N, SNR, rand_seed, doa_threshold);
+full_test_sim_az(doa_true_angles_az, d_row, T, lambda, ant_rows, N, SNR, rand_seed, doa_threshold);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -40,15 +40,15 @@ function [] = full_test_real_elev(path_source, d_col, lambda, Nr, N, doa_thresho
     rmse_hankel_elev_filtered = evaluate_hankel(doa_true_angles_elev, signal_real_elev_filtered, Nr, N, 5, d_col, lambda);
 
     % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
-    % signal_real_elev_full = convert_signal_to_cell(real_signal_elev);
-    % rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_real_elev_full, Nr, N, 5, d_col, lambda);
-    % rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_real_elev_full, lambda, Nr, d_col);
+    signal_real_elev_full = convert_signal_to_cell(real_signal_elev);
+    rmse_hankel_elev_full = evaluate_hankel(doa_true_angles_elev, signal_real_elev_full, Nr, N, 5, d_col, lambda);
+    rmse_music_elev_full = evaluate_music(doa_true_angles_elev, signal_real_elev_full, lambda, Nr, d_col);
     
     % Plot Hankel performance
     figure
     hold on;
-    % plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
-    % plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_elev_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_elev_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
     plot(1:9, rmse_music_elev_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
     plot(1:9, rmse_hankel_elev_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
@@ -71,15 +71,15 @@ function [] = full_test_real_az(path_source, d_row, lambda, Nr, N, doa_threshold
     rmse_hankel_az_filtered = evaluate_hankel(doa_true_angles_az, test_signal_sim_az_filtered, Nr, N, 3, d_row, lambda);
 
     % 4. Run Hankel vs. MUSIC evaluation on full dataset (as comparison)
-    % signal_real_az_full = convert_signal_to_cell(real_signal_az);
-    % rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_real_az_full, Nr, N, 3, d_row, lambda);
-    % rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_real_az_full, lambda, Nr, d_row);
+    signal_real_az_full = convert_signal_to_cell(real_signal_az);
+    rmse_hankel_az_full = evaluate_hankel(doa_true_angles_az, signal_real_az_full, Nr, N, 3, d_row, lambda);
+    rmse_music_az_full = evaluate_music(doa_true_angles_az, signal_real_az_full, lambda, Nr, d_row);
     
     % Plot Hankel performance
     figure
     hold on;
-    % plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
-    % plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
+    plot(1:9, rmse_music_az_full, 'blue-o','MarkerFaceColor', 'blue', 'DisplayName','MUSIC');
+    plot(1:9, rmse_hankel_az_full, 'yellow-o','MarkerFaceColor', 'yellow', 'DisplayName','Hankel SVD');
     plot(1:9, rmse_music_az_filtered, 'green-o','MarkerFaceColor', 'green', 'DisplayName','MUSIC with Selected Samples');
     plot(1:9, rmse_hankel_az_filtered, 'red-o','MarkerFaceColor', 'red', 'DisplayName','Hankel SVD with Selected Samples');
     hold off;
