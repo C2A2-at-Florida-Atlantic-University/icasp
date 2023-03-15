@@ -13,7 +13,7 @@ The paper has been submitted and accepted at [IEEE ICASSP 2023](https://2023.iee
 ## Links:
 
 * FAU CA-AI: [link](https://www.fau.edu/engineering/research/c2a2/)
-* FAI I-SENSE: [link](https://www.fau.edu/isense/)
+* FAU I-SENSE: [link](https://www.fau.edu/isense/)
 * POWDER MIMO Dataset: [link](https://renew-wireless.org/dataset-aoa.html)
 * POWDER MIMO Repository: [link](https://gitlab.flux.utah.edu/cnn-signal-discovery-senior-project/signal-collection)
 
