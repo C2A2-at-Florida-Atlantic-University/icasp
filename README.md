@@ -1,6 +1,6 @@
 # mMIMO DoA Source Code
 
-This repository contains Python and Matlab portions of the source code for the paper **Single-Sample Direction-of-Arrival Estimation for Fast and Robust 3D Localization with Real Measurements from a Massive MIMO System**.
+This repository contains Python and Matlab portions of the source code for the paper [**Single-Sample Direction-of-Arrival Estimation for Fast and Robust 3D Localization with Real Measurements from a Massive MIMO System**](./assets/manuscript.pdf).
 
 The paper has been submitted and accepted at [IEEE ICASSP 2023](https://2023.ieeeicassp.org/).
 
