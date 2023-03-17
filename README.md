@@ -16,6 +16,7 @@ The paper has been submitted and accepted at [IEEE ICASSP 2023](https://2023.iee
 * FAU I-SENSE: [link](https://www.fau.edu/isense/)
 * POWDER MIMO Dataset: [link](https://renew-wireless.org/dataset-aoa.html)
 * POWDER MIMO Repository: [link](https://gitlab.flux.utah.edu/cnn-signal-discovery-senior-project/signal-collection)
+* Ground Truth DoA Calculations: [link](https://docs.google.com/spreadsheets/d/1pu0bsN7wVaiehZxpgMJO2_AD-s3ZCJVnLLbtSgUTGf8/edit?usp=sharing)
 
 ## POWDER MIMO Dataset
 
@@ -30,6 +31,8 @@ The receiver has 6 rows of antennas and 8 columns of antennas. However, since no
 The distances between antennas (both row and column-wise) are provided on the figure.
 
 The dataset can be downloaded using the following [link](https://renew-wireless.org/dataset-aoa.html).
+
+The spreadsheet where we calculated ground truth DoA angles of the real dataset (based on TX & RX coordinates) can be found [here](https://docs.google.com/spreadsheets/d/1pu0bsN7wVaiehZxpgMJO2_AD-s3ZCJVnLLbtSgUTGf8/edit?usp=sharing).
 
 A note about raw dataset measurements:
 
