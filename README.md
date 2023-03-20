@@ -9,6 +9,7 @@ The paper has been submitted and accepted at [IEEE ICASSP 2023](https://2023.iee
 * [Sanaz Naderi](snaderi2021@fau.edu)
 * [Georgios I. Orfanidis](gorfanidis2021@fau.edu)
 * [George Sklivanitis](gsklivanitis@fau.edu)
+* [Dimitris Pados](dpados@fau.edu)
 
 ## Links:
 
