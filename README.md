@@ -4,6 +4,19 @@ This repository contains Python and Matlab portions of the source code for the p
 
 The paper has been submitted and accepted at [IEEE ICASSP 2023](https://2023.ieeeicassp.org/).
 
+If you find our work useful, please cite the paper:
+
+```
+@inproceedings{mazokha2023single,
+  title={Single-sample direction-of-arrival estimation for fast and robust 3D localization with real measurements from a massive MIMO system},
+  author={Mazokha, Stepan and Naderi, Sanaz and Orfanidis, Georgios I and Sklivanitis, George and Pados, Dimitris A and Hallstrom, Jason O},
+  booktitle={ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={1--5},
+  year={2023},
+  organization={IEEE}
+}
+```
+
 ## Authors:
 * [Stepan Mazokha](smazokha2016@fau.edu)
 * [Sanaz Naderi](snaderi2021@fau.edu)
